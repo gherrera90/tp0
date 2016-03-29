@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+int main (int argc, char* argv[]) {
+	FILE *fichero;
+	char letra, tab, espacio, salto;
+	char archivo[60];
+	int ascii, cont_carNI, cont_totcar, cont_pal, cont_lin;
+
+	/* Inicializo los contadores*/
+
+	cont_carNI, cont_totcar, cont_pal, cont_lin= 0,0,0,1;
+	printf("Introduzca el nombre del archivo a procesar: ");
+	gets( archivo );
+	
+	//printf("%s", archivo);  
+	fichero = fopen(archivo, "r"); /* Abro el archivo */
+	if (fichero==NULL)
+		{
+			printf("No se puede abrir el archivo.\n");
+			return EXIT_FAILURE; /*exit(1);*/
+		}
+	letra=getc(fichero);
+
+	/* Aca arranca el ciclo que va a leer char por char y compararlos para saber que contadores aumentan en cada iteracion */
+
+	while (feof(fichero)==0)
+		{
+			cont_totcar++;
+			letra=getc(fichero);
+			ascii=letra;
+			if (ascii==9)
+			{
+				cont_carNI++;
+			}
+			if (ascii==32)
+			{
+				cont_carNI++;
+				cont_pal++;
+			}
+			if (ascii==10)
+			{
+				cont_carNI++;
+				cont_lin++;
+				cont_pal++;
+			}
+		}
+	if (fclose(fichero)!=0)
+		{
+			printf("Problemas al cerrar el fichero\n");
+		}
+	printf("Archivo procesado:%s\n", archivo);
+	printf("Cantidad de caracteres totales:%d \nCantidad de caracteres no imprimibles:%d \nCantidad de palabras:%d\nCantidad de lineas:%d\n", cont_totcar, cont_carNI, cont_pal, cont_lin);
+	return 0;
+	}
